@@ -34,14 +34,14 @@ function App() {
   webSocket.removeAllListeners();
 
   webSocket.on('update', function (data) {
-    setMessages(data+messages.split('\n').slice(0, -1).join('\n'))
+    setMessages(messages.split('\n').slice(1).join('\n')+data)
   });
-  webSocket.on('newUser', function (data) { setMessages(`${data} has joined the chat\n${messages.split('\n').slice(0, -1).join('\n')}`) });
+  webSocket.on('newUser', function (data) { setMessages(`${messages.split('\n').slice(1).join('\n')}${data} has joined the chat\n`) });
   webSocket.on('changeName', function (data) {
     parsedData = JSON.parse(data)
-    setMessages(`${parsedData.oldName} has changed their name to ${parsedData.newName}\n${messages.split('\n').slice(0, -1).join('\n')}`)
+    setMessages(`${messages.split('\n').slice(1).join('\n')}${parsedData.oldName} has changed their name to ${parsedData.newName}\n`)
   });
-  webSocket.on('delUser', function (data) { setMessages(`${data} has left the chat\n${messages.split('\n').slice(0, -1).join('\n')}`) });
+  webSocket.on('delUser', function (data) { setMessages(`${messages.split('\n').slice(1).join('\n')}${data} has left the chat\n`) });
 
   const theme = createMuiTheme({
     palette: {
