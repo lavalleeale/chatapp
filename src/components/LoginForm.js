@@ -2,6 +2,7 @@ import Footer from './Footer'
 import { Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 
 const useStyles = makeStyles({
     card: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles({
 const LoginForm = ({ setUsernameWrapper }) => {
     const classes = useStyles()
     const [usernameText, setUsernameText] = useState('')
+    const [finished, setFinished] = useState(false)
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -29,9 +31,11 @@ const LoginForm = ({ setUsernameWrapper }) => {
             return
         }
         setUsernameWrapper(usernameText)
+        setFinished(true)
     }
     return (
         <>
+        {finished && <Redirect to="/" push />}
             <Card variant="outlined" className={classes.card}>
                 <form className={classes.root} onSubmit={onSubmit}>
                     <TextField
