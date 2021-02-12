@@ -56,7 +56,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header username={username} />
-      <Router basename={'/chatApp'}>
+      <Router>
         <Route exact path="/">
           <Chat messages={messages} sendMessageFunc={(messageText) => sendMessage(messageText)} username={username} />
         </Route>
