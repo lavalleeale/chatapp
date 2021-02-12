@@ -6,7 +6,7 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useState } from 'react'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
 } from "react-router-dom";
 var parsedData
