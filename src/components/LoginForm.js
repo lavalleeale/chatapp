@@ -18,30 +18,40 @@ const useStyles = makeStyles({
     }
 })
 
-const LoginForm = ({ setInfoWrapper }) => {
+const LoginForm = ({ setInfoWrapper, username }) => {
     const classes = useStyles()
-    const [usernameText, setUsernameText] = useState('')
-    const [roomText, setRoomText] = useState('')
+    const [usernameText, setUsernameText] = useState(username)
+    const [roomText, setRoomText] = useState('Lobby')
+    const [customRoomText, setCustomRoomText] = useState('')
     const [finished, setFinished] = useState(false)
 
     const onSubmit = (e) => {
         e.preventDefault()
 
         if (!usernameText) {
-            alert("Please enter username and password")
-            return
+            return alert("Please enter username")
         }
-        setInfoWrapper({
-            username: usernameText,
-            room: roomText
-        })
+        if (roomText === "Custom") {
+            if (!customRoomText) {
+                return alert("Enter custom room name or select another room")
+            }
+            setInfoWrapper({
+                username: usernameText,
+                room: customRoomText
+            })
+        } else {
+            setInfoWrapper({
+                username: usernameText,
+                room: roomText
+            })
+        }
         setFinished(true)
     }
     return (
         <>
             {finished && <Redirect to="/" push />}
             <Card variant="outlined" className={classes.card}>
-                <form className={classes.root} onSubmit={onSubmit}>
+                <form onSubmit={onSubmit}>
                     <TextField
                         className={classes.textField}
                         style={{ width: "60%" }}
@@ -49,22 +59,28 @@ const LoginForm = ({ setInfoWrapper }) => {
                         onChange={(e) => setUsernameText(e.target.value)}
                         label="Username"
                         variant="outlined" />
-                    <FormControl variant="outlined" style={{ width: "25%"}} >
+                    <FormControl variant="outlined" style={{ width: "calc(40% - 10px)", margin: "10px 0 0 10px" }} >
                         <InputLabel>Room</InputLabel>
                         <Select
-                            style={{
-                                margin: "10px",
-                            }}
+                            label="Room"
                             value={roomText}
                             onChange={(e) => setRoomText(e.target.value)}
                         >
-                            <MenuItem value="main">
-                                <em>Lobby</em>
-                            </MenuItem>
-                            <MenuItem value={"test1"}>Breakout 1</MenuItem>
-                            <MenuItem value={"test2"}>Breakout 2</MenuItem>
+                            <MenuItem value="Lobby">Lobby</MenuItem>
+                            <MenuItem value={"Breakout 1"}>Breakout 1</MenuItem>
+                            <MenuItem value={"Breakout 2"}>Breakout 2</MenuItem>
+                            <MenuItem value={"Custom"}>Custom</MenuItem>
                         </Select>
                     </FormControl>
+                    {roomText === "Custom" &&
+                        <TextField
+                            className={classes.textField}
+                            style={{ width: "100%" }}
+                            value= {customRoomText }
+                            onChange={(e) => setCustomRoomText(e.target.value)}
+                            label="Room Name"
+                            variant="outlined" />
+                    }
                     <Button style={{ float: "right" }} variant="outlined" type="submit">Submit</Button>
                 </form>
             </Card>

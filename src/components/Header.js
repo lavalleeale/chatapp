@@ -14,24 +14,27 @@ const useStyles = makeStyles({
         margin: "auto",
     }
 })
-const Header = ({ title, username }) => {
+const Header = ({ info }) => {
     const classes = useStyles()
     return (
         <Card className={classes.card}>
             <h1 className={classes.center} >
-                {title}
+                Chat App
             </h1>
-            {username &&
-                <h2 className={classes.center} style={{ float: "right" }}>
-                    {username}
-                </h2>
+            {info.username &&
+                <>
+                    <h2 className={classes.center} style={{ float: "right" }}>
+                        {`Room: ${info.room}`}
+                    </h2>
+                    <br/>
+                    <h2 className={classes.center} style={{ float: "right" }}>
+                        {`User: ${info.username}`}
+                    </h2>
+                </>
             }
         </Card>
     )
 }
 
-Header.defaultProps = {
-    title: "Chat App"
-}
 
 export default Header

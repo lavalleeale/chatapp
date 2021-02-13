@@ -8,6 +8,7 @@ import { useState } from 'react'
 import {
   HashRouter as Router,
   Route,
+  Redirect
 } from "react-router-dom";
 var parsedData
 
@@ -22,12 +23,12 @@ function App() {
   function setInfoWrapper(newInfo) {
     if (!info.username) {
       webSocket.emit("newUser", JSON.stringify(newInfo))
-    } else if (info.username!==newInfo.username&&info.room===newInfo.room) {
+    } else if (info.username !== newInfo.username && info.room === newInfo.room) {
       webSocket.emit("changeName", JSON.stringify({
         oldName: info.username,
         newName: newInfo.username
       }))
-    } else if (info.username===newInfo.username&&info.room!==newInfo.room) {
+    } else if (info.username === newInfo.username && info.room !== newInfo.room) {
       webSocket.emit("changeRoom", newInfo.room)
     } else {
       webSocket.emit("changeInfo", JSON.stringify(newInfo))
@@ -38,7 +39,7 @@ function App() {
   webSocket.removeAllListeners();
 
   webSocket.on('update', function (data) {
-    setMessages(messages.split('\n').slice(1).join('\n')+data)
+    setMessages(messages.split('\n').slice(1).join('\n') + data)
   });
   webSocket.on('newUser', function (data) { setMessages(`${messages.split('\n').slice(1).join('\n')}${data} has joined the chat\n`) });
   webSocket.on('changeName', function (data) {
@@ -59,13 +60,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header username={info.username} />
+      <Header info={info} />
       <Router>
         <Route exact path="/">
+          {!info.username && <Redirect to="/login" push />}
           <Chat messages={messages} sendMessageFunc={(messageText) => sendMessage(messageText)} username={info.username} />
         </Route>
         <Route exact path="/login">
-          <LoginForm setInfoWrapper={(newInfo) => setInfoWrapper(newInfo)} />
+          <LoginForm setInfoWrapper={(newInfo) => setInfoWrapper(newInfo)} username={info.username} />
         </Route>
       </Router>
     </ThemeProvider>
