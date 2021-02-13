@@ -18,29 +18,28 @@ function App() {
   const [cookies, setCookie] = useCookies(['info']);
 
   const [messages, setMessages] = useState("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-  const [info, setInfo] = useState({theme: "darkTheme"})
+  const [info, setInfo] = useState({ theme: "darkTheme" })
 
   function setInfoWrapper(newInfo) {
-    if (!info.username) {
-      webSocket.emit("newUser", JSON.stringify(newInfo))
-    } else if (info.username !== newInfo.username && info.room === newInfo.room) {
-      webSocket.emit("changeName", JSON.stringify({
-        oldName: info.username,
-        newName: newInfo.username
-      }))
-    } else if (info.username === newInfo.username && info.room !== newInfo.room) {
-      webSocket.emit("changeRoom", newInfo.room)
-    } else if (info.username===newInfo.username&&info.room===newInfo.room) {
-      return
-    } else {
-      webSocket.emit("changeInfo", JSON.stringify(newInfo))
-    }
     setCookie('info', newInfo, {
       path: "/",
       domain: "lavalleeale.github.io",
       secure: true
     })
     setInfo(newInfo)
+    if (!info.username) {
+      return webSocket.emit("newUser", JSON.stringify(newInfo))
+    } else if (info.username !== newInfo.username && info.room === newInfo.room) {
+      return webSocket.emit("changeName", JSON.stringify({
+        oldName: info.username,
+        newName: newInfo.username
+      }))
+    } else if (info.username === newInfo.username && info.room !== newInfo.room) {
+      return webSocket.emit("changeRoom", newInfo.room)
+    } else if (info.username === newInfo.username && info.room === newInfo.room) {
+      return
+    }
+    return webSocket.emit("changeInfo", JSON.stringify(newInfo))
   }
 
   webSocket.removeAllListeners();
