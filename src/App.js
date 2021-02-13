@@ -67,7 +67,7 @@ function App() {
       <Header info={info} />
       <Router>
         <Route exact path="/">
-          {!info.username && (cookies.info ? setInfo(cookies.info) : <Redirect to="/login" push />)}
+          {!info.username && (cookies.info ? setInfoWrapper(cookies.info) : <Redirect to="/login" push />)}
           <Chat messages={messages} sendMessageFunc={(messageText) => sendMessage(messageText)} username={info.username} />
         </Route>
         <Route exact path="/login">
