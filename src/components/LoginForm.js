@@ -89,4 +89,8 @@ const LoginForm = ({ setInfoWrapper, username }) => {
     )
 }
 
+LoginForm.defaultProps = {
+    username: ""
+}
+
 export default LoginForm

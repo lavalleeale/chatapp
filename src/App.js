@@ -5,11 +5,9 @@ import Header from './components/Header'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useState } from 'react'
-import {
-  HashRouter as Router,
-  Route,
-  Redirect
-} from "react-router-dom";
+import { HashRouter as Router, Route, Redirect } from "react-router-dom";
+import { useCookies } from 'react-cookie';
+
 var parsedData
 
 var webSocket = io("wss://alextesting.ninja/", {
@@ -17,6 +15,8 @@ var webSocket = io("wss://alextesting.ninja/", {
 })
 
 function App() {
+  const [cookies, setCookie] = useCookies(['info']);
+
   const [messages, setMessages] = useState("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
   const [info, setInfo] = useState({})
 
@@ -33,6 +33,11 @@ function App() {
     } else {
       webSocket.emit("changeInfo", JSON.stringify(newInfo))
     }
+    setCookie('info', newInfo, {
+      path: "/",
+      domain: "localhost",
+      secure: true
+    })
     setInfo(newInfo)
   }
 
@@ -56,14 +61,13 @@ function App() {
   function sendMessage(messageText) {
     webSocket.emit("sendMessage", `${info.username}: ${messageText}\n`)
   }
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header info={info} />
       <Router>
         <Route exact path="/">
-          {!info.username && <Redirect to="/login" push />}
+          {!info.username && (cookies.info ? setInfo(cookies.info) : <Redirect to="/login" push />)}
           <Chat messages={messages} sendMessageFunc={(messageText) => sendMessage(messageText)} username={info.username} />
         </Route>
         <Route exact path="/login">
