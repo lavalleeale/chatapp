@@ -30,6 +30,8 @@ function App() {
       }))
     } else if (info.username === newInfo.username && info.room !== newInfo.room) {
       webSocket.emit("changeRoom", newInfo.room)
+    } else if (info.username===newInfo.username&&info.room===newInfo.room) {
+      return
     } else {
       webSocket.emit("changeInfo", JSON.stringify(newInfo))
     }
