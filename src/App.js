@@ -66,7 +66,11 @@ function App() {
     })
   }
   function sendMessage(messageText) {
-    webSocket.emit("sendMessage", `${info.username}: ${messageText}\n`)
+    if (messageText==="/clear") {
+      setMessages("\n".repeat(window.outerWidth/50))
+    } else {
+      webSocket.emit("sendMessage", `${info.username}: ${messageText}\n`)
+    }
   }
   return (
     <ThemeProvider theme={themes[info.theme]}>
