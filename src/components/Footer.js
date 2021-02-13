@@ -21,7 +21,7 @@ const Footer = ( {isLogin} ) => {
                 &copy;Alex Lavallee 2021
             </p>
             {!isLogin &&
-            <Link to="/login" style={{ float: "right" }} >
+            <Link to="/login" style={{ float: "right", textDecoration: 'none' }} >
                 <Button variant="outlined" >
                     return to login
                 </Button>

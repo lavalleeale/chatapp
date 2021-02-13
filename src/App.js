@@ -18,7 +18,7 @@ function App() {
   const [cookies, setCookie] = useCookies(['info']);
 
   const [messages, setMessages] = useState("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-  const [info, setInfo] = useState({})
+  const [info, setInfo] = useState({theme: "darkTheme"})
 
   function setInfoWrapper(newInfo) {
     if (!info.username) {
@@ -54,17 +54,23 @@ function App() {
     setMessages(`${messages.split('\n').slice(1).join('\n')}${parsedData.oldName} has changed their name to ${parsedData.newName}\n`)
   });
   webSocket.on('delUser', function (data) { setMessages(`${messages.split('\n').slice(1).join('\n')}${data} has left the chat\n`) });
-
-  const theme = createMuiTheme({
-    palette: {
-      type: "dark",
-    }
-  });
+  const themes = {
+    darkTheme: createMuiTheme({
+      palette: {
+        type: "dark",
+      }
+    }),
+    lightTheme: createMuiTheme({
+      palette: {
+        type: "light",
+      }
+    })
+  }
   function sendMessage(messageText) {
     webSocket.emit("sendMessage", `${info.username}: ${messageText}\n`)
   }
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themes[info.theme]}>
       <CssBaseline />
       <Header info={info} />
       <Router>

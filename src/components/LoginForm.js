@@ -22,6 +22,7 @@ const LoginForm = ({ setInfoWrapper, username }) => {
     const classes = useStyles()
     const [usernameText, setUsernameText] = useState(username)
     const [roomText, setRoomText] = useState('Lobby')
+    const [theme, setTheme] = useState('darkTheme')
     const [customRoomText, setCustomRoomText] = useState('')
     const [finished, setFinished] = useState(false)
 
@@ -37,12 +38,14 @@ const LoginForm = ({ setInfoWrapper, username }) => {
             }
             setInfoWrapper({
                 username: usernameText,
-                room: customRoomText
+                room: customRoomText,
+                theme: theme
             })
         } else {
             setInfoWrapper({
                 username: usernameText,
-                room: roomText
+                room: roomText,
+                theme: theme
             })
         }
         setFinished(true)
@@ -54,22 +57,31 @@ const LoginForm = ({ setInfoWrapper, username }) => {
                 <form onSubmit={onSubmit}>
                     <TextField
                         className={classes.textField}
-                        style={{ width: "60%" }}
+                        style={{ width: "100%" }}
                         value={usernameText}
                         onChange={(e) => setUsernameText(e.target.value)}
                         label="Username"
                         variant="outlined" />
-                    <FormControl variant="outlined" style={{ width: "calc(40% - 10px)", margin: "10px 0 0 10px" }} >
+                    <FormControl variant="outlined" style={{ width: "calc(50% - 5px)", marginTop: "10px" }} >
                         <InputLabel>Room</InputLabel>
                         <Select
                             label="Room"
                             value={roomText}
-                            onChange={(e) => setRoomText(e.target.value)}
-                        >
+                            onChange={(e) => setRoomText(e.target.value)}>
                             <MenuItem value="Lobby">Lobby</MenuItem>
-                            <MenuItem value={"Breakout 1"}>Breakout 1</MenuItem>
-                            <MenuItem value={"Breakout 2"}>Breakout 2</MenuItem>
-                            <MenuItem value={"Custom"}>Custom</MenuItem>
+                            <MenuItem value="Breakout 1">Breakout 1</MenuItem>
+                            <MenuItem value="Breakout 2">Breakout 2</MenuItem>
+                            <MenuItem value="Custom">Custom</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl variant="outlined" style={{ width: "calc(50% - 5px)", marginTop: "10px", marginLeft: "10px" }} >
+                        <InputLabel>Theme</InputLabel>
+                        <Select
+                            label="Theme"
+                            value={theme}
+                            onChange={(e) => setTheme(e.target.value)}>
+                            <MenuItem value="darkTheme">Dark</MenuItem>
+                            <MenuItem value="lightTheme">Light</MenuItem>
                         </Select>
                     </FormControl>
                     {roomText === "Custom" &&
@@ -81,7 +93,7 @@ const LoginForm = ({ setInfoWrapper, username }) => {
                             label="Room Name"
                             variant="outlined" />
                     }
-                    <Button style={{ float: "right" }} variant="outlined" type="submit">Submit</Button>
+                    <Button style={{ float: "right", marginTop:"10px" }} variant="outlined" type="submit">Submit</Button>
                 </form>
             </Card>
             <Footer isLogin={true} />
