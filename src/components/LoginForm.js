@@ -25,6 +25,7 @@ const LoginForm = ({ setInfoWrapper, username, mainTheme }) => {
     const [theme, setTheme] = useState(mainTheme)
     const [customRoomText, setCustomRoomText] = useState('')
     const [finished, setFinished] = useState(false)
+    console.log(mainTheme)
 
     const onSubmit = (e) => {
         e.preventDefault()
