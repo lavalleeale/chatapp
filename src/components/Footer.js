@@ -20,15 +20,10 @@ const Footer = ( {isLogin} ) => {
             <p style={{display: "inline"}}>
                 &copy;Alex Lavallee 2021
             </p>
-            {isLogin ?
-            <Link to="/" style={{ float: "right" }} >
+            {!isLogin &&
+            <Link to="/login" style={{ float: "right" }} >
                 <Button variant="outlined" >
-                    Back
-                </Button>
-            </Link>
-            :<Link to="/login" style={{ float: "right" }} >
-                <Button variant="outlined" >
-                    Login
+                    return to login
                 </Button>
             </Link>
 
