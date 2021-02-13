@@ -35,7 +35,7 @@ function App() {
     }
     setCookie('info', newInfo, {
       path: "/",
-      domain: "localhost",
+      domain: "lavalleeale.github.io",
       secure: true
     })
     setInfo(newInfo)
