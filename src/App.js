@@ -78,7 +78,7 @@ function App() {
           <Chat messages={messages} sendMessageFunc={(messageText) => sendMessage(messageText)} username={info.username} />
         </Route>
         <Route exact path="/login">
-          <LoginForm setInfoWrapper={(newInfo) => setInfoWrapper(newInfo)} username={info.username} />
+          <LoginForm setInfoWrapper={(newInfo) => setInfoWrapper(newInfo)} username={info.username} theme={info.theme} />
         </Route>
       </Router>
     </ThemeProvider>

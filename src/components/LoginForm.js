@@ -18,11 +18,11 @@ const useStyles = makeStyles({
     }
 })
 
-const LoginForm = ({ setInfoWrapper, username }) => {
+const LoginForm = ({ setInfoWrapper, username, mainTheme }) => {
     const classes = useStyles()
     const [usernameText, setUsernameText] = useState(username)
     const [roomText, setRoomText] = useState('Lobby')
-    const [theme, setTheme] = useState('darkTheme')
+    const [theme, setTheme] = useState(mainTheme)
     const [customRoomText, setCustomRoomText] = useState('')
     const [finished, setFinished] = useState(false)
 
