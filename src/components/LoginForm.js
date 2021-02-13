@@ -89,12 +89,12 @@ const LoginForm = ({ setInfoWrapper, username, mainTheme }) => {
                         <TextField
                             className={classes.textField}
                             style={{ width: "100%" }}
-                            value= {customRoomText }
+                            value={customRoomText}
                             onChange={(e) => setCustomRoomText(e.target.value)}
                             label="Room Name"
                             variant="outlined" />
                     }
-                    <Button style={{ float: "right", marginTop:"10px" }} variant="outlined" type="submit">Submit</Button>
+                    <Button style={{ float: "right", marginTop: "10px" }} variant="outlined" type="submit">Submit</Button>
                 </form>
             </Card>
             <Footer isLogin={true} />

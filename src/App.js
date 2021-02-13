@@ -17,7 +17,7 @@ var webSocket = io("wss://alextesting.ninja/", {
 function App() {
   const [cookies, setCookie] = useCookies(['info']);
 
-  const [messages, setMessages] = useState("\n".repeat(window.outerWidth/50))
+  const [messages, setMessages] = useState("\n".repeat(window.outerWidth / 50))
   const [info, setInfo] = useState({ theme: "darkTheme" })
 
   function setInfoWrapper(newInfo) {
@@ -66,8 +66,8 @@ function App() {
     })
   }
   function sendMessage(messageText) {
-    if (messageText==="/clear") {
-      setMessages("\n".repeat(window.outerWidth/50))
+    if (messageText === "/clear") {
+      setMessages("\n".repeat(window.outerWidth / 50))
     } else {
       webSocket.emit("sendMessage", `${info.username}: ${messageText}\n`)
     }

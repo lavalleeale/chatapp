@@ -21,9 +21,7 @@ const Chat = ({ messages, username, sendMessageFunc }) => {
                     {messages}
                 </pre>
             </Card>
-            {username &&
-                <SendMessage sendMessageFunc={sendMessageFunc}/>
-            }
+            <SendMessage sendMessageFunc={sendMessageFunc} />
             <Footer isLogin={false} />
         </>
     )
