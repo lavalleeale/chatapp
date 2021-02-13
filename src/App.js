@@ -17,18 +17,22 @@ var webSocket = io("wss://alextesting.ninja/", {
 
 function App() {
   const [messages, setMessages] = useState("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-  const [username, setUsermame] = useState('')
+  const [info, setInfo] = useState({})
 
-  function setUsermameWrapper(newUsername) {
-    if (username) {
+  function setInfoWrapper(newInfo) {
+    if (!info.username) {
+      webSocket.emit("newUser", JSON.stringify(newInfo))
+    } else if (info.username!==newInfo.username&&info.room===newInfo.room) {
       webSocket.emit("changeName", JSON.stringify({
-        oldName: username,
-        newName: newUsername
+        oldName: info.username,
+        newName: newInfo.username
       }))
+    } else if (info.username===newInfo.username&&info.room!==newInfo.room) {
+      webSocket.emit("changeRoom", newInfo.room)
     } else {
-      webSocket.emit("newUser", newUsername)
+      webSocket.emit("changeInfo", JSON.stringify(newInfo))
     }
-    setUsermame(newUsername)
+    setInfo(newInfo)
   }
 
   webSocket.removeAllListeners();
@@ -49,19 +53,19 @@ function App() {
     }
   });
   function sendMessage(messageText) {
-    webSocket.emit("sendMessage", `${username}: ${messageText}\n`)
+    webSocket.emit("sendMessage", `${info.username}: ${messageText}\n`)
   }
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header username={username} />
+      <Header username={info.username} />
       <Router>
         <Route exact path="/">
-          <Chat messages={messages} sendMessageFunc={(messageText) => sendMessage(messageText)} username={username} />
+          <Chat messages={messages} sendMessageFunc={(messageText) => sendMessage(messageText)} username={info.username} />
         </Route>
         <Route exact path="/login">
-          <LoginForm setUsernameWrapper={(newUsername) => setUsermameWrapper(newUsername)} />
+          <LoginForm setInfoWrapper={(newInfo) => setInfoWrapper(newInfo)} />
         </Route>
       </Router>
     </ThemeProvider>
