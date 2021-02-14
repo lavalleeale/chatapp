@@ -20,6 +20,8 @@ const useStyles = makeStyles({
     'margin-bottom': '10px',
   },
 });
+let error = false;
+let errorChanged = false;
 
 const LoginForm = ({
   setInfoWrapper, username, mainTheme, serverInfo,
@@ -30,7 +32,6 @@ const LoginForm = ({
   const [theme, setTheme] = useState(mainTheme);
   const [customRoomText, setCustomRoomText] = useState('');
   const [finished, setFinished] = useState(false);
-  const [error, setError] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -50,16 +51,21 @@ const LoginForm = ({
     }
     return setFinished(true);
   };
+  errorChanged = false;
   if (usernameText !== username) {
     serverInfo.forEach((client) => {
       if (usernameText === client.username) {
         if (!error) {
-          setError(true);
+          error = true;
+          errorChanged = true;
+          // eslint-disable-next-line no-useless-return
+          return;
         }
-      } else if (error) {
-        setError(false);
       }
     });
+    if (error && !errorChanged) {
+      error = false;
+    }
   }
   return (
     <>
@@ -67,8 +73,8 @@ const LoginForm = ({
       <Card variant="outlined" className={classes.card}>
         <form onSubmit={onSubmit}>
           <TextField
-            // eslint-disable-next-line no-undef
             error={error}
+            helperText="Username in use"
             required
             className={classes.textField}
             style={{ width: '100%' }}
@@ -113,13 +119,14 @@ const LoginForm = ({
           />
           )}
           <Button disabled={error} style={{ float: 'right', marginTop: '10px' }} variant="outlined" type="submit">Submit</Button>
+
         </form>
       </Card>
       {!!serverInfo.length && (
       <Card className={classes.card}>
         <h2> Online Users: </h2>
         {serverInfo.map((client) => (
-          <div style={{ overflow: 'hidden' }}>
+          <div key={client.username} style={{ overflow: 'hidden' }}>
             <p style={{ float: 'left' }}>
               {`User: ${client.username}`}
             </p>
