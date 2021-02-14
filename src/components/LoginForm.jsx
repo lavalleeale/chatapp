@@ -54,7 +54,7 @@ const LoginForm = ({
   errorChanged = false;
   if (usernameText !== username) {
     serverInfo.forEach((client) => {
-      if (usernameText === client.username) {
+      if (usernameText.toLowerCase() === client.username.toLowerCase()) {
         if (!error) {
           error = true;
           errorChanged = true;
