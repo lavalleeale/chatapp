@@ -21,13 +21,16 @@ const useStyles = makeStyles({
   },
 });
 
-const LoginForm = ({ setInfoWrapper, username, mainTheme }) => {
+const LoginForm = ({
+  setInfoWrapper, username, mainTheme, serverInfo,
+}) => {
   const classes = useStyles();
   const [usernameText, setUsernameText] = useState(username);
   const [roomText, setRoomText] = useState('Lobby');
   const [theme, setTheme] = useState(mainTheme);
   const [customRoomText, setCustomRoomText] = useState('');
   const [finished, setFinished] = useState(false);
+  const [error, setError] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -47,12 +50,23 @@ const LoginForm = ({ setInfoWrapper, username, mainTheme }) => {
     }
     return setFinished(true);
   };
+  serverInfo.forEach((client) => {
+    if (usernameText === client.username) {
+      if (!error) {
+        setError(true);
+      }
+    } else if (error) {
+      setError(false);
+    }
+  });
   return (
     <>
       {finished && <Redirect to="" push />}
       <Card variant="outlined" className={classes.card}>
         <form onSubmit={onSubmit}>
           <TextField
+            // eslint-disable-next-line no-undef
+            error={error}
             required
             className={classes.textField}
             style={{ width: '100%' }}
@@ -96,9 +110,24 @@ const LoginForm = ({ setInfoWrapper, username, mainTheme }) => {
             variant="outlined"
           />
           )}
-          <Button style={{ float: 'right', marginTop: '10px' }} variant="outlined" type="submit">Submit</Button>
+          <Button disabled={error} style={{ float: 'right', marginTop: '10px' }} variant="outlined" type="submit">Submit</Button>
         </form>
       </Card>
+      {!!serverInfo.length && (
+      <Card className={classes.card}>
+        <h2> Online Users: </h2>
+        {serverInfo.map((client) => (
+          <div style={{ overflow: 'hidden' }}>
+            <p style={{ float: 'left' }}>
+              {`User: ${client.username}`}
+            </p>
+            <p style={{ float: 'right' }}>
+              {`Room: ${client.room}`}
+            </p>
+          </div>
+        ))}
+      </Card>
+      )}
       <Footer isLogin />
     </>
   );
@@ -113,6 +142,10 @@ LoginForm.propTypes = {
   setInfoWrapper: PropTypes.func.isRequired,
   username: PropTypes.string,
   mainTheme: PropTypes.string,
+  serverInfo: PropTypes.arrayOf(PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    room: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default LoginForm;
