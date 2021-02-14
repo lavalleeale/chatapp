@@ -50,15 +50,17 @@ const LoginForm = ({
     }
     return setFinished(true);
   };
-  serverInfo.forEach((client) => {
-    if (usernameText === client.username) {
-      if (!error) {
-        setError(true);
+  if (usernameText !== username) {
+    serverInfo.forEach((client) => {
+      if (usernameText === client.username) {
+        if (!error) {
+          setError(true);
+        }
+      } else if (error) {
+        setError(false);
       }
-    } else if (error) {
-      setError(false);
-    }
-  });
+    });
+  }
   return (
     <>
       {finished && <Redirect to="" push />}
