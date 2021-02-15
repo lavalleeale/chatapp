@@ -74,7 +74,7 @@ const LoginForm = ({
         <form onSubmit={onSubmit}>
           <TextField
             error={error}
-            helperText="Username in use"
+            helperText={error && 'Username in use'}
             required
             className={classes.textField}
             style={{ width: '100%' }}
