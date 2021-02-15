@@ -24,7 +24,7 @@ function App() {
   function setInfoWrapper(newInfo) {
     setCookie('info', newInfo, {
       path: '/',
-      domain: 'lavalleeale.github.io',
+      domain: window.location.host,
       secure: true,
     });
     setInfo(newInfo);
